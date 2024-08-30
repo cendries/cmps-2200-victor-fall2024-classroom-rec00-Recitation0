@@ -27,6 +27,28 @@ test_compute_table()
 #print( compute_table("abcabcacab"))
 
 def kmp(gene,genome): 
+    if len(gene) < 1:
+        return True #True if gene is "" because empty string is contained in genome
+    if len(genome) < 1:
+        return False #False if genome is ""
+    table = compute_table(gene)
+    i = 0 #Index for gene
+    j = 0 #Index for genome
+    while j < len(genome): #Checking index is not larger than length of genome
+        if gene[i] == genome[j]:
+            i+=1
+            j+=1
+        if i == len(gene): #If you get through the entire string then return true
+            return True
+        else:
+            if i > 0: 
+                j = table[i + 1] #Use compute_table function to start at next right index j
+            else: 
+                j+=1
+            i = 0   #Reset to first element of gene       
+    return False
+    
+
     ''' Your code here.
         Implement the Knuth-Morris-Pratt algorithm: On input gene and genome, it should return True if gene in genome and False otherwise.
         Your code should not use string comparison to compare strings of length 2 or more.
@@ -44,8 +66,8 @@ def test_kmp():
     for gene in genes:
         for genome in genomes: #tests every pair of gene and genome.
             # You can uncomment out this to help you debug.
-            # print("gene, genome", gene, genome)
-            # print(kmp(gene, genome))
-            # print(gene in genome)
+            print("gene, genome", gene, genome)
+            print(kmp(gene, genome))
+            print(gene in genome)
             assert(kmp(gene, genome) == (gene in genome) ) #asserts that the kmp function returns the same value as the builtin 'in' function.
 test_kmp()
